@@ -56,6 +56,8 @@ class TitlesOCRProcess(OCRServerProcess):
 class OCRProcess(OCRServerProcess):
     def __init__(self, ocr_urls, payload):
         self.OCR = TitlesOCRProcess(ocr_urls, payload)
+        self.OCR_URLs = ocr_urls[0]
+        
     def get_text(self, ocr_output):
         text = []
         for page in ocr_output["pages"]:
