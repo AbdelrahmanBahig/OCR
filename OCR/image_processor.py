@@ -10,10 +10,12 @@ class OCR:
             'remove_modified_image': False,
         }
         self.ocr_process = OCRProcess(self.configurations['engine_urls'], self.configurations['payload'])       
+    
     def set_configurations(self, config ):
         for key,value in config.items():
             if key in self.configurations:
              self.configurations[key] = value
+        self.ocr_process = OCRProcess(config['engine_urls'], config['payload'])
 
     def validate_manadatory_config(self , config):
        
