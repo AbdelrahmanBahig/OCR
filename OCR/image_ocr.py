@@ -41,7 +41,7 @@ class TitlesOCRProcess(OCRServerProcess):
         self.payload = payload
 
     def _get_language(self):
-        lang = {'en': 'English/Latest', 'ar': 'Arabic/Lite', 'ar-en': 'Multi/Ar-En'}
+        lang = {'en': 'English/Latest', 'ar': 'Arabic/Latest', 'ar-en': 'Multi/Ar-En'}
         language = self.payload.get('lanaguage')
         return lang.get(language, 'Multi/Ar-En')
 

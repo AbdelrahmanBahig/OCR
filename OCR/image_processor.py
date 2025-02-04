@@ -28,7 +28,7 @@ class OCR:
 
     def save_json(self , img , ocr_result):
         try:
-            txt_file = img.replace(".jpg", "_modified5.json")
+            txt_file = img.replace(".jpg", ".json")
             if os.path.exists(txt_file):
                 return 0
             json.dump(ocr_result, open(txt_file, "w", encoding="utf-8"), indent=1, ensure_ascii=False)

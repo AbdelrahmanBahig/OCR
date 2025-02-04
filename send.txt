@@ -1,0 +1,99 @@
+import base64
+import os
+import pickle
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+
+from django.conf import settings
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
+from google.auth.transport.requests import Request
+from google_auth_oauthlib.flow import InstalledAppFlow
+from googleapiclient.discovery import build
+from monafasat.email.tender_html import TenderHtml
+import django
+
+# os.environ.setdefault("DJANGO_SETTINGS_MODULE", "Etimad.settings")
+# django.setup()
+
+
+class EmailSender:
+    SCOPES = ["https://www.googleapis.com/auth/gmail.send"]
+    def __init__(self, credentials_file=None, token_file="token.pickle", use_password=False):
+        """
+        Initialize the GmailEmailSender with either OAuth or password credentials.
+        :param credentials_file: Path to the OAuth credentials JSON file.
+        :param token_file: Path to save the OAuth token.
+        :param use_password: Boolean to switch between OAuth2 and using password for SMTP.
+        """
+        self.use_password = use_password
+        self.credentials_file = credentials_file or settings.GOOGLE_CREDENTIALS_PATH
+        self.token_file = token_file
+        self.creds = self._get_credentials() if not use_password else None
+
+    def _get_credentials(self):
+        """
+        Get OAuth credentials from file or prompt the user to log in.
+        """
+        creds = None
+        if os.path.exists(self.token_file):
+            with open(self.token_file, "rb") as token:
+                creds = pickle.load(token)
+        if not creds or not creds.valid:
+            if creds and creds.expired and creds.refresh_token:
+                creds.refresh(Request())
+            else:
+                flow = InstalledAppFlow.from_client_secrets_file(
+                    self.credentials_file, self.SCOPES
+                )
+                creds = flow.run_local_server(port=0)
+            with open(self.token_file, "wb") as token:
+                pickle.dump(creds, token)
+        return creds
+
+    def send_using_password(self, to_email, subject, html_message):
+
+        try:
+            if isinstance(to_email, str):
+                to_email = [to_email]
+            email = EmailMessage(subject, html_message, settings.EMAIL_HOST_USER, to_email)
+            email.content_subtype = "html"
+            email.send()
+            print("✅ Email sent via SMTP with HTML content!")
+        except Exception as e:
+            print(f"❌ Failed to send email via SMTP: {e}")
+
+    def send_using_gmail_api(self, to_email, subject, html_content):
+        message = MIMEMultipart()
+        message["to"] = to_email if isinstance(to_email, str) else ", ".join(to_email)
+        message["from"] = "me"  # "me" refers to the authenticated user's email
+        message["subject"] = subject
+        message.attach(MIMEText(html_content, "html"))
+        try:
+            # Encode the message in base64
+            raw_message = base64.urlsafe_b64encode(message.as_bytes()).decode("utf-8")
+
+            # Send the email using the Gmail API
+            service = build("gmail", "v1", credentials=self.creds)
+            message = {"raw": raw_message}
+            service.users().messages().send(userId="me", body=message).execute()
+            print("✅ Email sent successfully via Gmail API!")
+        except Exception as e:
+            print(f"❌ Failed to send email via Gmail API: {e}")
+
+    def send_email(self, to_email, subject, html_content):
+        """
+        Send an email with HTML content using either OAuth or password (SMTP).
+        :param to_email: Email address of the recipient (or a list of recipients).
+        :param subject: Subject of the email.
+        :param html_content: HTML content of the email.
+        """
+
+        if self.use_password:
+            # Send email using SMTP and password
+            self.send_using_password(to_email, subject, html_content)
+        else:
+            # Send email using Gmail API
+            self.send_using_gmail_api(to_email, subject, html_content)
+
+

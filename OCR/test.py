@@ -2,6 +2,7 @@ images  , config {}
 from OCR  import OCR
 
 
+
 o = OCR()
 o.set_config(config{})
 for images :

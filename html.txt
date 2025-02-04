@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تفاصيل المناقصة</title>
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #f3f4f6; margin: 0; padding: 20px; direction: rtl;">
+<table align="center" cellpadding="0" cellspacing="0" border="0"
+       style="width: 100%; max-width: 900px; background: #fff; border: 1px solid #ddd; border-radius: 10px; padding: 20px;">
+    <tr>
+        <td>
+            <!-- Header Section -->
+            <table style="width: 100%; border-bottom: 2px solid #e4e7eb; padding-bottom: 10px; margin-bottom: 20px;">
+                <tr>
+                    <td style="color: #000; font-size: 14px;">
+                                                تاريخ النشر: <span>{{ tender.submitionDate|slice:":10" }}</span>
+
+                    </td>
+
+                    <td align="left"
+                        style="background: #d1fae5; color: #059669; padding: 6px 16px; border-radius: 20px; font-size: 14px; font-weight: bold;">
+                        {{ tender.tenderTypeName }}
+                    </td>
+                </tr>
+            </table>
+
+            <!-- Title and Subtitle -->
+            <h3 style="font-size: 22px; font-weight: bold; color: #1d4ed8; margin-bottom: 10px;"><a
+                    href="{{ tender.tenderDetailUrl }}">{{ tender.tenderName }}</a>
+            </h3>
+            <p style="color: #6b7280; font-size: 16px; margin-bottom: 15px;">
+                {{ tender.branchName }} - {{ tender.tenderTypeName }}
+                <a href="{{ tender.tenderDetailUrl }}"
+                   class="pull-right">التفاصيل</a>
+            </p>
+
+            <!-- Content Section -->
+            <table style="width: 100%; margin-bottom: 25px;">
+                <tr>
+                    <td align="center" style="width: 50%;">
+                        <p style="font-size: 16px; color: #0a5a8f; margin-bottom: 8px;">الغرض من المنافسة</p>
+                        <p style="color: #374151;"> {{tender.tenderPurpose}}</p>
+                    </td>
+                    <td align="center" style="width: 50%;">
+                        <p style="font-size: 16px; color: #0a5a8f; margin-bottom: 8px;">قيمة وثائق المنافسة</p>
+                        <strong style="font-size: 26px; color: #1d4ed8;">{{tender.tenderPrice}}</strong>
+                    </td>
+                </tr>
+            </table>
+
+            <!-- Footer Section -->
+            <table style="width: 100%;">
+                <tr>
+                    <td style="padding: 12px 15px; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; text-align: center;">
+                        <p style="font-size: 14px; color: #0a5a8f; margin-bottom: 5px;">الرقم المرجعي</p>
+                        <strong style="font-size: 18px; color: #1f2937;">{{ tender.tenderId }}</strong>
+                    </td>
+                    <td style="padding: 12px 15px; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; text-align: center;">
+                        <p style="font-size: 14px; color: #0a5a8f; margin-bottom: 5px;">آخر موعد لإستلام الإستفسارات</p>
+                        <strong style="font-size: 18px; color: #1f2937;">{{ tender.lastEnqueriesDate|slice:":10" }}</strong>
+                    </td>
+                    <td style="padding: 12px 15px; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; text-align: center;">
+                        <p style="font-size: 14px; color: #0a5a8f; margin-bottom: 5px;">آخر موعد لتقديم العروض</p>
+                        <strong style="font-size: 18px; color: #1f2937;">{{ tender.lastOfferPresentationDate|slice:":10" }}<br>{{ tender.lastOfferPresentationDate|slice:"11:16" }}</strong>
+
+                    </td>
+                    <td style="padding: 12px 15px; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; text-align: center;">
+                        <p style="font-size: 14px; color: #0a5a8f; margin-bottom: 5px;">تاريخ ووقت فتح العروض</p>
+                        <strong style="font-size: 18px; color: #1f2937;">{{ tender.offersOpeningDate|slice:":10" }}<br>{{ tender.offersOpeningDate|slice:"11:16" }}</strong>
+
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+</body>
+</html>
