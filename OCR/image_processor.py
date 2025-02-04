@@ -1,4 +1,4 @@
-from OCR.image_ocr import OCRProcess , OCRParagraph
+from OCR.image_ocr import OCRProcess
 import os
 import json
 class OCR:
