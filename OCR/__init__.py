@@ -1,1 +1,1 @@
-from OCR.image_ocr import OCR
+from OCR.image_processor import OCR
