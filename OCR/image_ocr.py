@@ -15,8 +15,8 @@ class OCRServerProcess:
         return {}
 
     def get_ocr_url(self):
-        url = self.OCR_URLs[self.current_url_index]
-        self.current_url_index = (self.current_url_index + 1) % len(self.OCR_URLs)
+        url = self.OCR_URLs[0]
+       # self.current_url_index = (self.current_url_index + 1) % len(self.OCR_URLs)
         return url
 
     def ocr_recognition(self, image_path):
