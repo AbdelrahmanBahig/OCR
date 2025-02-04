@@ -17,7 +17,7 @@ class OCR:
 
     def validate_manadatory_config(self , config):
        
-       mandatory_keys = ['engine_url', 'payload']
+       mandatory_keys = ['engine_urls', 'payload']
        missing_keys = [key for key in mandatory_keys if key not in config]
        if missing_keys:
           raise ValueError (f"Missing mandatory keys {', '.join(missing_keys)}")
